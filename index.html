@@ -49,6 +49,7 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
     }
     body::before {
       content: "";
@@ -67,7 +68,7 @@
     ul, ol { list-style: none; }
     .shell {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       width: var(--w);
       margin: 0 auto;
       padding: 0 0 50px;
@@ -77,8 +78,10 @@
     #particles {
       position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: 1;
       pointer-events: none;
+      width: 100%;
+      height: 100%;
     }
 
     /* TOPBAR */
@@ -166,89 +169,159 @@
       color: var(--muted); font-size: 0.82rem; font-weight: 600;
     }
 
-    /* HERO VISUAL — animated crypto illustration */
+    /* HERO VISUAL */
     .hero-visual {
       position: relative;
-      display: grid;
-      place-items: center;
-      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 460px;
     }
-    .hero-orb {
-      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.7; pointer-events: none;
-    }
-    .orb-1 { width: 260px; height: 260px; top: -10px; right: 20px; background: var(--green-glow); }
-    .orb-2 { width: 200px; height: 200px; bottom: 30px; left: 0; background: var(--blue-glow); }
-    .orb-3 { width: 140px; height: 140px; top: 40%; left: 20%; background: rgba(45, 212, 191, 0.15); }
 
-    .crypto-visual {
+    /* Crypto illustration */
+    .crypto-scene {
       position: relative;
-      width: 380px; height: 380px;
+      width: 380px;
+      height: 380px;
     }
-    /* Central glowing circle */
-    .cv-center {
+
+    /* Central orb */
+    .orb-center {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      width: 140px; height: 140px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(52, 211, 153, 0.3), rgba(34, 211, 238, 0.15), transparent 70%);
-      box-shadow: 0 0 80px rgba(52, 211, 153, 0.2), 0 0 160px rgba(34, 211, 238, 0.1);
-      display: grid; place-items: center;
-      animation: floatCenter 6s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.4), rgba(34, 211, 238, 0.2), transparent 70%);
+      box-shadow: 0 0 60px rgba(52, 211, 153, 0.3), 0 0 120px rgba(34, 211, 238, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: orbPulse 4s ease-in-out infinite;
     }
-    .cv-center-inner {
-      width: 80px; height: 80px;
+    .orb-center-inner {
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--green), var(--blue));
-      display: grid; place-items: center;
-      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
       box-shadow: 0 0 30px var(--green-glow);
     }
-    @keyframes floatCenter {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -54%) scale(1.04); }
+    @keyframes orbPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px rgba(52, 211, 153, 0.3), 0 0 120px rgba(34, 211, 238, 0.15); }
+      50% { transform: translate(-50%, -53%) scale(1.06); box-shadow: 0 0 80px rgba(52, 211, 153, 0.4), 0 0 160px rgba(34, 211, 238, 0.2); }
     }
 
-    /* Orbiting ring */
-    .cv-ring {
+    /* Orbit rings */
+    .orbit-ring {
       position: absolute;
-      top: 50%; left: 50%;
-      width: 300px; height: 300px;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px dashed rgba(52, 211, 153, 0.25);
       transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1px dashed rgba(52, 211, 153, 0.2);
-      animation: spinSlow 30s linear infinite;
+      animation: orbitSpin 25s linear infinite;
     }
-    @keyframes spinSlow { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .orbit-ring.r1 { width: 260px; height: 260px; animation-duration: 25s; }
+    .orbit-ring.r2 { width: 340px; height: 340px; animation-duration: 35s; animation-direction: reverse; border-color: rgba(103, 232, 249, 0.2); }
+    @keyframes orbitSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-    /* Floating coin items */
-    .cv-coin {
+    /* Floating coins */
+    .coin {
       position: absolute;
-      width: 52px; height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 50%;
-      display: grid; place-items: center;
-      font-size: 1.3rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      animation: floatCoin 4s ease-in-out infinite;
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      z-index: 3;
     }
-    .cv-coin.c1 { top: 10%; left: 5%; background: linear-gradient(135deg, #f0b90b, #f3ba2f); color: #000; animation-delay: 0s; }
-    .cv-coin.c2 { top: 5%; right: 15%; background: linear-gradient(135deg, #627eea, #8b9ff8); color: #fff; animation-delay: 0.6s; }
-    .cv-coin.c3 { bottom: 15%; left: 10%; background: linear-gradient(135deg, #8247e5, #a76bfa); color: #fff; animation-delay: 1.2s; }
-    .cv-coin.c4 { bottom: 10%; right: 5%; background: linear-gradient(135deg, #14f195, #00d29a); color: #000; animation-delay: 1.8s; }
-    .cv-coin.c5 { top: 48%; left: -2%; background: linear-gradient(135deg, #0098ea, #48b8f0); color: #fff; animation-delay: 2.4s; }
-    .cv-coin.c6 { top: 48%; right: -2%; background: linear-gradient(135deg, #e84142, #f07070); color: #fff; animation-delay: 3s; }
-    @keyframes floatCoin {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .coin img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    /* BNB */
+    .coin-bnb {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, #f0b90b, #d4a40a);
+      top: 8%; left: 12%;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 0s;
+    }
+    /* ETH */
+    .coin-eth {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #627eea, #8b9ff8);
+      top: 6%; right: 18%;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+    /* POL */
+    .coin-pol {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, #8247e5, #a76bfa);
+      bottom: 18%; left: 8%;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 1.6s;
+    }
+    /* SOL */
+    .coin-sol {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, #14f195, #00d29a);
+      bottom: 12%; right: 10%;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 2.4s;
+    }
+    /* GRAM */
+    .coin-gram {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, #0098ea, #48b8f0);
+      top: 48%; left: 0;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 3.2s;
+    }
+    /* RON */
+    .coin-ron {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #e84142, #f07070);
+      top: 48%; right: 0;
+      animation: coinFloat 5s ease-in-out infinite;
+      animation-delay: 4s;
+    }
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
     }
 
-    /* Connection lines (SVG overlay) */
-    .cv-lines {
+    /* Connection lines SVG */
+    .scene-lines {
       position: absolute;
       inset: 0;
+      z-index: 1;
       pointer-events: none;
     }
+
+    /* Glow blobs around visual */
+    .glow-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .gb1 { width: 200px; height: 200px; top: -20px; right: 0; background: rgba(52, 211, 153, 0.35); }
+    .gb2 { width: 160px; height: 160px; bottom: 0; left: -20px; background: rgba(103, 232, 249, 0.25); }
+    .gb3 { width: 120px; height: 120px; top: 30%; left: 30%; background: rgba(45, 212, 191, 0.15); }
 
     /* ============ SECTION ============ */
     .section { padding: 48px 0; }
@@ -259,14 +332,14 @@
     }
     .section-head p { margin: 12px 0 0; color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
 
-    /* STATS BAR */
+    /* STATS */
     .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
     .stats-bar article {
       padding: 22px; border-radius: var(--radius-lg);
       background: var(--panel); border: 1px solid var(--line); text-align: center;
       transition: transform 0.2s, border-color 0.2s;
     }
-    .stats-bar article:hover { transform: translateY(-2px); border-color: rgba(52,211,153,0.2); }
+    .stats-bar article:hover { transform: translateY(-3px); border-color: rgba(52,211,153,0.25); }
     .stats-bar strong {
       display: block; font-family: var(--font-display); font-size: 2rem;
       background: linear-gradient(135deg, var(--green), var(--blue));
@@ -280,13 +353,15 @@
     .feature {
       padding: 26px; border-radius: var(--radius-lg);
       background: var(--panel); border: 1px solid var(--line);
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
     }
-    .feature:hover { border-color: rgba(52, 211, 153, 0.18); transform: translateY(-3px); }
+    .feature:hover { border-color: rgba(52, 211, 153, 0.2); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
     .feature-icon {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 48px; height: 48px; border-radius: var(--radius-md); font-size: 1.5rem; margin-bottom: 18px;
+      width: 50px; height: 50px; border-radius: var(--radius-md); font-size: 1.5rem; margin-bottom: 18px;
+      transition: transform 0.3s;
     }
+    .feature:hover .feature-icon { transform: scale(1.15) rotate(-5deg); }
     .fi-green { background: rgba(52, 211, 153, 0.12); }
     .fi-blue { background: rgba(103, 232, 249, 0.12); }
     .fi-teal { background: rgba(45, 212, 191, 0.12); }
@@ -300,15 +375,15 @@
       display: flex; align-items: flex-start; gap: 18px;
       padding: 24px; border-radius: var(--radius-lg);
       background: var(--panel); border: 1px solid var(--line);
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
     }
-    .step:hover { border-color: rgba(52,211,153,0.15); transform: translateX(4px); }
+    .step:hover { border-color: rgba(52,211,153,0.2); transform: translateX(6px); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
     .step-num {
-      flex: none; width: 42px; height: 42px;
+      flex: none; width: 44px; height: 44px;
       display: flex; align-items: center; justify-content: center;
       border-radius: var(--radius-md);
-      background: linear-gradient(135deg, rgba(52, 211, 153, 0.18), rgba(34, 211, 238, 0.12));
-      font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--text);
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(34, 211, 238, 0.12));
+      font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--green);
     }
     .step-body h3 { margin: 0 0 8px; font-size: 1.1rem; }
     .step-body p { margin: 0; color: var(--muted); line-height: 1.65; }
@@ -321,7 +396,7 @@
       background: var(--panel); border: 1px solid var(--line);
       transition: border-color 0.2s, transform 0.2s;
     }
-    .cmd-item:hover { border-color: rgba(52,211,153,0.15); transform: translateY(-2px); }
+    .cmd-item:hover { border-color: rgba(52,211,153,0.2); transform: translateY(-2px); }
     .cmd-icon {
       flex: none; width: 42px; height: 42px;
       display: flex; align-items: center; justify-content: center;
@@ -341,16 +416,16 @@
     .faq-list { display: grid; gap: 12px; }
     .faq-item {
       border-radius: var(--radius-md); background: var(--panel); border: 1px solid var(--line);
-      overflow: hidden; transition: border-color 0.2s;
+      overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .faq-item:hover { border-color: rgba(52, 211, 153, 0.18); }
+    .faq-item:hover { border-color: rgba(52, 211, 153, 0.2); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
     .faq-item summary {
       cursor: pointer; list-style: none; padding: 22px 24px 18px;
       font-size: 1.02rem; font-weight: 600;
       display: flex; align-items: center; justify-content: space-between; gap: 14px;
     }
     .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: '+'; font-size: 1.4rem; color: var(--green); transition: transform 0.2s; }
+    .faq-item summary::after { content: '+'; font-size: 1.4rem; color: var(--green); transition: transform 0.25s; }
     .faq-item[open] summary::after { transform: rotate(45deg); }
     .faq-item .faq-body { padding: 0 24px 22px; color: var(--muted); line-height: 1.7; }
 
@@ -360,7 +435,9 @@
       padding: 32px; margin: 24px 0; border-radius: var(--radius-xl);
       background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(34, 211, 238, 0.06));
       border: 1px solid rgba(52, 211, 153, 0.12);
+      transition: border-color 0.2s;
     }
+    .cta-band:hover { border-color: rgba(52, 211, 153, 0.25); }
     .cta-band h2 { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; letter-spacing: -0.03em; margin: 0; }
     .cta-band p { margin: 6px 0 0; color: var(--muted); }
     .cta-actions { display: flex; gap: 12px; flex-shrink: 0; }
@@ -369,9 +446,9 @@
     .card {
       padding: 28px; border-radius: var(--radius-lg);
       background: var(--panel); border: 1px solid var(--line);
-      transition: border-color 0.2s, box-shadow 0.25s;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     }
-    .card:hover { border-color: rgba(52, 211, 153, 0.2); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
+    .card:hover { border-color: rgba(52, 211, 153, 0.2); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); transform: translateY(-3px); }
     .card-num {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 36px; height: 36px; border-radius: var(--radius-full);
@@ -393,7 +470,7 @@
     .footer-links a:hover { color: var(--text); }
 
     /* SCROLL REVEAL */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
     /* MOBILE */
@@ -404,9 +481,9 @@
       .hero, .split { grid-template-columns: 1fr; }
       .features { grid-template-columns: 1fr 1fr; }
       .stats-bar { grid-template-columns: 1fr 1fr; }
-      .hero-visual { min-height: auto; order: -1; }
+      .hero-visual { min-height: auto; }
       .cmd-grid { grid-template-columns: 1fr; }
-      .crypto-visual { width: 300px; height: 300px; margin: 0 auto; }
+      .crypto-scene { width: 320px; height: 320px; margin: 0 auto; }
     }
     @media (max-width: 768px) {
       .topbar { position: static; border-radius: var(--radius-lg); flex-wrap: wrap; justify-content: center; }
@@ -427,11 +504,12 @@
       .stats-bar { gap: 10px; }
       .stats-bar article { padding: 16px; }
       .stats-bar strong { font-size: 1.5rem; }
-      .crypto-visual { width: 260px; height: 260px; }
-      .cv-center { width: 100px; height: 100px; }
-      .cv-center-inner { width: 60px; height: 60px; font-size: 1.5rem; }
-      .cv-ring { width: 220px; height: 220px; }
-      .cv-coin { width: 40px; height: 40px; font-size: 1rem; }
+      .crypto-scene { width: 280px; height: 280px; }
+      .orb-center { width: 90px; height: 90px; }
+      .orb-center-inner { width: 55px; height: 55px; font-size: 1.4rem; }
+      .orbit-ring.r1 { width: 200px; height: 200px; }
+      .orbit-ring.r2 { width: 260px; height: 260px; }
+      .coin { transform: scale(0.85); }
     }
   </style>
 </head>
@@ -482,54 +560,51 @@
     </div>
 
     <div class="hero-visual reveal">
-      <div class="hero-orb orb-1"></div>
-      <div class="hero-orb orb-2"></div>
-      <div class="hero-orb orb-3"></div>
-      <div class="crypto-visual">
-        <!-- SVG connection lines -->
-        <svg class="cv-lines" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
-          <line x1="190" y1="190" x2="44" y2="56" stroke="rgba(52,211,153,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
-          <line x1="190" y1="190" x2="330" y2="38" stroke="rgba(103,232,249,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
-          <line x1="190" y1="190" x2="58" y2="306" stroke="rgba(130,71,229,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
-          <line x1="190" y1="190" x2="342" y2="320" stroke="rgba(20,241,149,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
-          <line x1="190" y1="190" x2="12" y2="190" stroke="rgba(0,152,234,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
-          <line x1="190" y1="190" x2="370" y2="190" stroke="rgba(232,65,66,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- Glow blobs -->
+      <div class="glow-blob gb1"></div>
+      <div class="glow-blob gb2"></div>
+      <div class="glow-blob gb3"></div>
+
+      <div class="crypto-scene">
+        <!-- Connection lines -->
+        <svg class="scene-lines" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+          <line x1="190" y1="190" x2="70" y2="58" stroke="rgba(240,185,11,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="190" y1="190" x2="310" y2="45" stroke="rgba(98,126,234,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="190" y1="190" x2="50" y2="310" stroke="rgba(130,71,229,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="190" y1="190" x2="330" y2="300" stroke="rgba(20,241,149,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="190" y1="190" x2="12" y2="190" stroke="rgba(0,152,234,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="190" y1="190" x2="370" y2="190" stroke="rgba(232,65,66,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <!-- Outer orbit decoration -->
+          <circle cx="190" cy="190" r="130" stroke="rgba(52,211,153,0.08)" stroke-width="1" fill="none" stroke-dasharray="4,8"/>
+          <circle cx="190" cy="190" r="170" stroke="rgba(103,232,249,0.06)" stroke-width="1" fill="none" stroke-dasharray="4,8"/>
         </svg>
-        <!-- Orbiting ring -->
-        <div class="cv-ring"></div>
-        <!-- Center -->
-        <div class="cv-center">
-          <div class="cv-center-inner">⛽</div>
+
+        <!-- Orbit rings -->
+        <div class="orbit-ring r1"></div>
+        <div class="orbit-ring r2"></div>
+
+        <!-- Central orb -->
+        <div class="orb-center">
+          <div class="orb-center-inner">⛽</div>
         </div>
+
         <!-- Floating coins -->
-        <div class="cv-coin c1" title="BNB">BNB</div>
-        <div class="cv-coin c2" title="ETH">ETH</div>
-        <div class="cv-coin c3" title="POL">POL</div>
-        <div class="cv-coin c4" title="SOL">SOL</div>
-        <div class="cv-coin c5" title="GRAM">💎</div>
-        <div class="cv-coin c6" title="RON">RON</div>
+        <div class="coin coin-bnb">BNB</div>
+        <div class="coin coin-eth">ETH</div>
+        <div class="coin coin-pol">POL</div>
+        <div class="coin coin-sol">SOL</div>
+        <div class="coin coin-gram">💎</div>
+        <div class="coin coin-ron">RON</div>
       </div>
     </div>
   </section>
 
   <!-- STATS -->
   <div class="stats-bar reveal">
-    <article>
-      <strong>7</strong>
-      <span>Blockchain Didukung</span>
-    </article>
-    <article>
-      <strong>Rp10rb</strong>
-      <span>Minimal Pembelian</span>
-    </article>
-    <article>
-      <strong>24/7</strong>
-      <span>Bot Aktif</span>
-    </article>
-    <article>
-      <strong>100%</strong>
-      <span>Transparansi Harga</span>
-    </article>
+    <article><strong>7</strong><span>Blockchain Didukung</span></article>
+    <article><strong>Rp10rb</strong><span>Minimal Pembelian</span></article>
+    <article><strong>24/7</strong><span>Bot Aktif</span></article>
+    <article><strong>100%</strong><span>Transparansi Harga</span></article>
   </div>
 
   <!-- TENTANG -->
@@ -537,20 +612,18 @@
     <div class="section-head reveal">
       <span class="eyebrow">💡 Tentang Kami</span>
       <h2>Apa Itu GSI - RG CINEMA?</h2>
-      <p>
-        GSI adalah singkatan dari <strong style="color:var(--green)">GasFee Store Indonesia</strong>, sebuah platform yang menyediakan layanan pembelian gas fee crypto untuk berbagai jaringan blockchain populer di Indonesia.
-      </p>
+      <p>GSI adalah singkatan dari <strong style="color:var(--green)">GasFee Store Indonesia</strong>, platform jual beli gas fee crypto untuk berbagai blockchain populer di Indonesia.</p>
     </div>
     <div class="split reveal">
-      <div class="card" style="height:100%">
+      <div class="card">
         <div class="card-num">🎯</div>
         <h3>Misi Kami</h3>
-        <p>Membuat gas fee crypto dapat diakses oleh semua orang Indonesia dengan harga terjangkau, proses cepat, dan tanpa ribet. Cukup lewat Telegram, kamu bisa beli gas fee kapan saja.</p>
+        <p>Membuat gas fee crypto dapat diakses oleh semua orang Indonesia dengan harga terjangkau, proses cepat, dan tanpa ribet.</p>
       </div>
-      <div class="card" style="height:100%">
+      <div class="card">
         <div class="card-num">🛡️</div>
         <h3>Keamanan Terjamin</h3>
-        <p>GSI menggunakan sistem otomatis yang terintegrasi langsung dengan blockchain. Setiap transaksi dapat diverifikasi melalui block explorer resmi. Transparansi penuh untuk setiap transaksi.</p>
+        <p>Sistem otomatis terintegrasi langsung dengan blockchain. Setiap transaksi bisa diverifikasi di block explorer resmi.</p>
       </div>
     </div>
   </section>
@@ -560,39 +633,14 @@
     <div class="section-head reveal">
       <span class="eyebrow">🎯 Layanan Kami</span>
       <h2>Apa yang Kami Tawarkan?</h2>
-      <p>Layanan utama yang bikin hidup kamu lebih mudah di dunia crypto.</p>
     </div>
     <div class="features reveal">
-      <div class="feature">
-        <div class="feature-icon fi-green">🛒</div>
-        <h3>Pembelian Gas Fee</h3>
-        <p>Beli gas fee untuk transaksi crypto di 7 blockchain populer. Nominal mulai Rp10.000 sampai Rp100.000 per transaksi.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-blue">💳</div>
-        <h3>Top Up Saldo</h3>
-        <p>Isi saldo bot kamu lewat admin dengan mudah dan cepat. Minimal top up Rp10.000.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-teal">🏆</div>
-        <h3>Program Referral</h3>
-        <p>Undang teman dan dapatkan point! 1 point = Rp1, minimal tukar 100 point ke saldo.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-amber">📦</div>
-        <h3>Cek Stock & Estimasi</h3>
-        <p>Lihat ketersediaan stock dan estimasi harga real-time dari CoinGecko sebelum beli.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-green">👤</div>
-        <h3>Profil & Riwayat</h3>
-        <p>Pantau saldo, riwayat order, dan status transaksi kamu langsung dari bot.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-blue">💬</div>
-        <h3>Support Admin</h3>
-        <p>Admin aktif siap membantu untuk transaksi top up dan pertanyaan lainnya.</p>
-      </div>
+      <div class="feature"><div class="feature-icon fi-green">🛒</div><h3>Pembelian Gas Fee</h3><p>Beli gas fee untuk 7 blockchain. Nominal Rp10.000 - Rp100.000 per transaksi.</p></div>
+      <div class="feature"><div class="feature-icon fi-blue">💳</div><h3>Top Up Saldo</h3><p>Isi saldo bot lewat admin dengan mudah. Minimal Rp10.000.</p></div>
+      <div class="feature"><div class="feature-icon fi-teal">🏆</div><h3>Program Referral</h3><p>Undang teman, dapatkan point! 1 point = Rp1. Minimal tukar 100 point.</p></div>
+      <div class="feature"><div class="feature-icon fi-amber">📦</div><h3>Cek Stock & Estimasi</h3><p>Harga real-time dari CoinGecko sebelum beli.</p></div>
+      <div class="feature"><div class="feature-icon fi-green">👤</div><h3>Profil & Riwayat</h3><p>Pantau saldo dan riwayat order langsung dari bot.</p></div>
+      <div class="feature"><div class="feature-icon fi-blue">💬</div><h3>Support Admin</h3><p>Admin aktif siap membantu lewat Telegram.</p></div>
     </div>
   </section>
 
@@ -601,91 +649,46 @@
     <div class="section-head reveal">
       <span class="eyebrow">🌐 Multi-chain</span>
       <h2>Blockchain yang Didukung</h2>
-      <p>GSI mendukung 7 blockchain populer untuk kebutuhan gas fee harian kamu.</p>
     </div>
     <div class="features reveal">
-      <div class="feature">
-        <div class="feature-icon fi-amber">🔶</div>
-        <h3>BNB Chain</h3>
-        <p>Jaringan terpopuler di Indonesia. Gas fee murah untuk DeFi, NFT, dan token di BSC.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-blue">🔷</div>
-        <h3>ETH Base</h3>
-        <p>Layer 2 Ethereum dari Coinbase. Transaksi cepat dengan gas fee lebih rendah.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-teal">🔷</div>
-        <h3>ETH Arbitrum</h3>
-        <p>Layer 2 Ethereum terbesar untuk DeFi dan dApps dengan throughput tinggi.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-green">🟣</div>
-        <h3>Polygon</h3>
-        <p>Gas fee super rendah. Cocok untuk gaming dan NFT.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-blue">💎</div>
-        <h3>GRAM (ex Toncoin)</h3>
-        <p>Blockchain dari Telegram. Populer untuk transaksi di ekosistem Telegram.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon fi-amber">🔴</div>
-        <h3>Ronin</h3>
-        <p>Jaringan gaming dari Axie Infinity untuk transaksi gaming dan NFT.</p>
-      </div>
+      <div class="feature"><div class="feature-icon fi-amber">🔶</div><h3>BNB Chain</h3><p>Gas fee murah untuk DeFi, NFT, dan token di BSC.</p></div>
+      <div class="feature"><div class="feature-icon fi-blue">🔷</div><h3>ETH Base</h3><p>Layer 2 dari Coinbase. Transaksi cepat, gas fee rendah.</p></div>
+      <div class="feature"><div class="feature-icon fi-teal">🔷</div><h3>ETH Arbitrum</h3><p>Layer 2 terbesar untuk DeFi dan dApps.</p></div>
+      <div class="feature"><div class="feature-icon fi-green">🟣</div><h3>Polygon</h3><p>Gas fee super rendah. Cocok untuk gaming dan NFT.</p></div>
+      <div class="feature"><div class="feature-icon fi-blue">💎</div><h3>GRAM (ex Toncoin)</h3><p>Blockchain dari Telegram yang semakin populer.</p></div>
+      <div class="feature"><div class="feature-icon fi-amber">🔴</div><h3>Ronin</h3><p>Jaringan gaming Axie Infinity untuk NFT marketplace.</p></div>
     </div>
     <div style="margin-top:16px">
-      <div class="feature reveal" style="max-width:400px">
-        <div class="feature-icon fi-green">🟢</div>
-        <h3>Solana</h3>
-        <p>Blockchain berkecepatan tinggi dengan gas fee hampir nol.</p>
-      </div>
+      <div class="feature reveal" style="max-width:400px"><div class="feature-icon fi-green">🟢</div><h3>Solana</h3><p>Kecepatan tinggi, gas fee hampir nol.</p></div>
     </div>
   </section>
 
   <!-- PANDUAN -->
   <section id="panduan" class="section">
     <div class="section-head reveal">
-      <span class="eyebrow">📖 Panduan Lengkap</span>
+      <span class="eyebrow">📖 Panduan</span>
       <h2>Cara Menggunakan Bot GSI</h2>
-      <p>Langkah-langkah untuk mulai berbelanja gas fee crypto lewat Telegram Bot.</p>
     </div>
     <div class="steps reveal">
       <div class="step">
         <div class="step-num">1</div>
-        <div class="step-body">
-          <h3>Buka Bot & Register</h3>
-          <p>Buka <a href="https://t.me/rgcinema_bot" target="_blank" style="color:var(--green);font-weight:700">@rgcinema_bot</a> di Telegram. Masukkan <strong>email valid</strong> kamu. Akun langsung aktif!</p>
-        </div>
+        <div class="step-body"><h3>Buka Bot & Register</h3><p>Buka <a href="https://t.me/rgcinema_bot" target="_blank" style="color:var(--green);font-weight:700">@rgcinema_bot</a> di Telegram. Masukkan email valid. Akun langsung aktif!</p></div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div class="step-body">
-          <h3>Top Up Saldo</h3>
-          <p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/topup</code>, masukkan nominal, hubungi admin untuk pembayaran. Setelah approve, saldo masuk otomatis!</p>
-        </div>
+        <div class="step-body"><h3>Top Up Saldo</h3><p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/topup</code>, masukkan nominal, hubungi admin. Saldo masuk otomatis!</p></div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-body">
-          <h3>Cek Stock & Estimasi</h3>
-          <p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/stock</code> untuk lihat ketersediaan dan estimasi harga real-time dari CoinGecko.</p>
-        </div>
+        <div class="step-body"><h3>Cek Stock & Estimasi</h3><p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/stock</code> untuk lihat ketersediaan dan estimasi harga real-time.</p></div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
-        <div class="step-body">
-          <h3>Beli Gas Fee</h3>
-          <p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/beli</code>, pilih aset & nominal, masukkan <strong>alamat wallet</strong>. Gas fee langsung dikirim!</p>
-        </div>
+        <div class="step-body"><h3>Beli Gas Fee</h3><p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/beli</code>, pilih aset & nominal, masukkan alamat wallet. Gas fee dikirim!</p></div>
       </div>
       <div class="step">
         <div class="step-num">5</div>
-        <div class="step-body">
-          <h3>Cek Riwayat</h3>
-          <p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/riwayat</code> untuk lihat semua order. Setiap transaksi punya <strong>tx hash</strong> yang bisa dicek di block explorer.</p>
-        </div>
+        <div class="step-body"><h3>Cek Riwayat</h3><p>Ketik <code style="padding:3px 10px;border-radius:6px;background:rgba(52,211,153,0.1);color:var(--green);font-weight:700">/riwayat</code> untuk lihat semua order dan tx hash bukti transaksi.</p></div>
       </div>
     </div>
   </section>
@@ -693,17 +696,16 @@
   <!-- COMMANDS -->
   <section class="section">
     <div class="section-head reveal">
-      <span class="eyebrow">⚡ Referensi Cepat</span>
-      <h2>Daftar Perintah Bot</h2>
-      <p>Semua perintah yang tersedia di Telegram Bot GSI.</p>
+      <span class="eyebrow">⚡ Perintah Bot</span>
+      <h2>Daftar Perintah</h2>
     </div>
     <div class="cmd-grid reveal">
       <div class="cmd-item"><div class="cmd-icon">🛒</div><div class="cmd-body"><h4>Beli Gas Fee</h4><code>/beli</code><p>Pilih aset, nominal, dan wallet tujuan.</p></div></div>
-      <div class="cmd-item"><div class="cmd-icon">📦</div><div class="cmd-body"><h4>Cek Stock</h4><code>/stock</code><p>Stok tersedia dan estimasi harga real-time.</p></div></div>
-      <div class="cmd-item"><div class="cmd-icon">💳</div><div class="cmd-body"><h4>Top Up Saldo</h4><code>/topup</code><p>Isi saldo bot. Minimal Rp10.000.</p></div></div>
-      <div class="cmd-item"><div class="cmd-icon">👤</div><div class="cmd-body"><h4>Profil Saya</h4><code>/profil</code><p>Akun, saldo, dan kode referral.</p></div></div>
-      <div class="cmd-item"><div class="cmd-icon">📋</div><div class="cmd-body"><h4>Riwayat Order</h4><code>/riwayat</code><p>Semua riwayat transaksi.</p></div></div>
-      <div class="cmd-item"><div class="cmd-icon">🏆</div><div class="cmd-body"><h4>Referral</h4><code>/referral</code><p>Link undangan dan tukar point ke saldo.</p></div></div>
+      <div class="cmd-item"><div class="cmd-icon">📦</div><div class="cmd-body"><h4>Cek Stock</h4><code>/stock</code><p>Stok dan estimasi harga real-time.</p></div></div>
+      <div class="cmd-item"><div class="cmd-icon">💳</div><div class="cmd-body"><h4>Top Up</h4><code>/topup</code><p>Isi saldo. Minimal Rp10.000.</p></div></div>
+      <div class="cmd-item"><div class="cmd-icon">👤</div><div class="cmd-body"><h4>Profil</h4><code>/profil</code><p>Akun, saldo, dan referral.</p></div></div>
+      <div class="cmd-item"><div class="cmd-icon">📋</div><div class="cmd-body"><h4>Riwayat</h4><code>/riwayat</code><p>Semua riwayat transaksi.</p></div></div>
+      <div class="cmd-item"><div class="cmd-icon">🏆</div><div class="cmd-body"><h4>Referral</h4><code>/referral</code><p>Link undangan dan tukar point.</p></div></div>
       <div class="cmd-item"><div class="cmd-icon">❓</div><div class="cmd-body"><h4>Bantuan</h4><code>/bantuan</code><p>Info update dan bantuan.</p></div></div>
       <div class="cmd-item"><div class="cmd-icon">🏠</div><div class="cmd-body"><h4>Menu Utama</h4><code>/start</code><p>Kembali ke menu utama.</p></div></div>
     </div>
@@ -725,45 +727,18 @@
   <section id="faq" class="section">
     <div class="section-head reveal">
       <span class="eyebrow">❓ FAQ</span>
-      <h2>Pertanyaan yang Sering Ditanyakan</h2>
+      <h2>Pertanyaan Umum</h2>
     </div>
     <div class="faq-list reveal">
-      <details class="faq-item">
-        <summary>Apa itu gas fee crypto?</summary>
-        <div class="faq-body">Gas fee adalah biaya untuk memproses transaksi di jaringan blockchain. Setiap transaksi membutuhkan gas fee agar bisa dijalankan oleh validator di jaringan.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Berapa minimal beli gas fee?</summary>
-        <div class="faq-body">Minimal <strong>Rp10.000</strong> dan maksimal Rp100.000 per transaksi. Cocok untuk kebutuhan harian.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Bagaimana cara top up saldo?</summary>
-        <div class="faq-body">Ketik <code>/topup</code>, masukkan nominal, hubungi admin. Saldo ditambahkan otomatis setelah pembayaran terverifikasi.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Blockchain apa saja yang didukung?</summary>
-        <div class="faq-body"><strong>BNB Chain, ETH Base, ETH Arbitrum, Polygon, GRAM (ex Toncoin), Ronin, dan Solana</strong>.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Jam operasional admin berapa?</summary>
-        <div class="faq-body">Bot beroperasi <strong>24 jam</strong> untuk beli gas fee. Untuk <strong>top up saldo</strong>, admin melayani <strong>jam 07:00 - 22:00</strong> WIB.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Bagaimana cara cek bukti transaksi?</summary>
-        <div class="faq-body">Bot memberikan <strong>tx hash</strong> dan link ke block explorer. Kamu juga bisa cek dengan <code>/riwayat</code>.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Bagaimana program referral?</summary>
-        <div class="faq-body">Ketik <code>/referral</code> untuk link undangan. Dapat point dari transaksi teman (1 point = Rp1). Minimal tukar 100 point.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Apakah transaksi aman?</summary>
-        <div class="faq-body">Ya! Sistem otomatis terintegrasi langsung dengan blockchain. Setiap transaksi bisa diverifikasi di block explorer resmi.</div>
-      </details>
-      <details class="faq-item">
-        <summary>Bagaimana jika transaksi gagal?</summary>
-        <div class="faq-body">Saldo dikembalikan otomatis. Hubungi admin lewat Telegram jika masalah berlanjut.</div>
-      </details>
+      <details class="faq-item"><summary>Apa itu gas fee crypto?</summary><div class="faq-body">Biaya untuk memproses transaksi di jaringan blockchain. Dibutuhkan agar transaksi bisa dijalankan oleh validator.</div></details>
+      <details class="faq-item"><summary>Berapa minimal beli gas fee?</summary><div class="faq-body">Minimal <strong>Rp10.000</strong> dan maksimal Rp100.000 per transaksi.</div></details>
+      <details class="faq-item"><summary>Bagaimana cara top up?</summary><div class="faq-body">Ketik <code>/topup</code>, masukkan nominal, hubungi admin. Saldo ditambahkan otomatis.</div></details>
+      <details class="faq-item"><summary>Blockchain apa saja yang didukung?</summary><div class="faq-body"><strong>BNB Chain, ETH Base, ETH Arbitrum, Polygon, GRAM, Ronin, Solana</strong>.</div></details>
+      <details class="faq-item"><summary>Jam operasional admin?</summary><div class="faq-body">Bot aktif <strong>24 jam</strong>. Top up saldo dilayani <strong>jam 07:00 - 22:00</strong> WIB.</div></details>
+      <details class="faq-item"><summary>Cara cek bukti transaksi?</summary><div class="faq-body">Bot memberikan <strong>tx hash</strong> dan link ke block explorer. Cek juga dengan <code>/riwayat</code>.</div></details>
+      <details class="faq-item"><summary>Program referral?</summary><div class="faq-body">Ketik <code>/referral</code>. Dapat point dari transaksi teman (1 point = Rp1). Minimal tukar 100 point.</div></details>
+      <details class="faq-item"><summary>Apakah transaksi aman?</summary><div class="faq-body">Ya! Sistem otomatis terintegrasi blockchain. Setiap transaksi bisa diverifikasi di block explorer.</div></details>
+      <details class="faq-item"><summary>Transaksi gagal?</summary><div class="faq-body">Saldo dikembalikan otomatis. Hubungi admin jika masalah berlanjut.</div></details>
     </div>
   </section>
 
@@ -787,41 +762,51 @@
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
 // Scroll reveal
-const revealTargets = document.querySelectorAll('.reveal');
+var revealTargets = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
       }
-    },
-    { threshold: 0.12 }
-  );
-  revealTargets.forEach(el => observer.observe(el));
+    });
+  }, { threshold: 0.1 });
+  revealTargets.forEach(function(el) { observer.observe(el); });
 } else {
-  revealTargets.forEach(el => el.classList.add('is-visible'));
+  revealTargets.forEach(function(el) { el.classList.add('is-visible'); });
 }
 
 // Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', e => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
-      document.querySelector('.nav')?.classList.remove('open');
+document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var href = link.getAttribute('href');
+    if (href && href.length > 1) {
+      var target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector('.nav').classList.remove('open');
+      }
     }
   });
 });
 
-// Floating particles
+// ===== FLOATING PARTICLES =====
 (function() {
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
+  var canvas = document.getElementById('particles');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = 0, h = 0;
+  var particles = [];
+  var PARTICLE_COUNT = 50;
+  var CONNECT_DIST = 150;
+  var COLORS = [
+    [52, 211, 153],
+    [103, 232, 249],
+    [45, 212, 191],
+    [251, 191, 36]
+  ];
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -830,53 +815,67 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   resize();
   window.addEventListener('resize', resize);
 
-  const colors = ['rgba(52,211,153,', 'rgba(103,232,249,', 'rgba(45,212,191,'];
-
-  for (let i = 0; i < 40; i++) {
+  // Create particles
+  for (var i = 0; i < PARTICLE_COUNT; i++) {
+    var c = COLORS[Math.floor(Math.random() * COLORS.length)];
     particles.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      r: Math.random() * 2 + 0.5,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.4 + 0.1
+      r: Math.random() * 2.5 + 0.8,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      color: c,
+      alpha: Math.random() * 0.5 + 0.15
     });
   }
 
-  function draw() {
+  function animate() {
     ctx.clearRect(0, 0, w, h);
-    for (const p of particles) {
-      p.x += p.dx;
-      p.y += p.dy;
+
+    // Update & draw particles
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
       if (p.x < 0) p.x = w;
       if (p.x > w) p.x = 0;
       if (p.y < 0) p.y = h;
       if (p.y > h) p.y = 0;
+
+      // Draw particle with glow
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + p.alpha + ')';
+      ctx.fillStyle = 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + p.alpha + ')';
+      ctx.fill();
+
+      // Glow effect
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + (p.alpha * 0.15) + ')';
       ctx.fill();
     }
+
     // Draw connections
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
+    for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = particles[i].x - particles[j].x;
+        var dy = particles[i].y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT_DIST) {
+          var opacity = 0.12 * (1 - dist / CONNECT_DIST);
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = 'rgba(52,211,153,' + (0.06 * (1 - dist / 120)) + ')';
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = 'rgba(52,211,153,' + opacity + ')';
+          ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(draw);
+
+    requestAnimationFrame(animate);
   }
-  draw();
+  animate();
 })();
 </script>
 
